@@ -743,6 +743,25 @@ files = [
 ]
 
 [[package]]
+name = "geoalchemy2"
+version = "0.18.4"
+description = "Using SQLAlchemy with Spatial Databases"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "geoalchemy2-0.18.4-py3-none-any.whl", hash = "sha256:89e6680dcbb6b8d8c784dcaa889e48ab2783aa42487ee5730fdbd7a7c7ddf6ec"},
+    {file = "geoalchemy2-0.18.4.tar.gz", hash = "sha256:5719e2bb040d5c406d5d03425fec87997ce9351843b053ca11373a0f5a31971b"},
+]
+
+[package.dependencies]
+packaging = "*"
+SQLAlchemy = ">=1.4"
+
+[package.extras]
+shapely = ["Shapely (>=1.7)"]
+
+[[package]]
 name = "greenlet"
 version = "3.3.2"
 description = "Lightweight in-process concurrent programming"
@@ -1243,7 +1262,7 @@ version = "26.0"
 description = "Core utilities for Python packages"
 optional = false
 python-versions = ">=3.8"
-groups = ["dev", "lint"]
+groups = ["main", "dev", "lint"]
 files = [
     {file = "packaging-26.0-py3-none-any.whl", hash = "sha256:b36f1fef9334a5588b4166f8bcd26a14e521f2b55e6b9de3aaa80d3ff7a37529"},
     {file = "packaging-26.0.tar.gz", hash = "sha256:00243ae351a257117b6a241061796684b084ed1c516a08c48a3f7e147a9d80b4"},
@@ -2297,4 +2316,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "e126fbda2f8755ee7527ae587b52e480f45c089743314ef38cdf465efe271a07"
+content-hash = "da1c6b707232525098054358b38c23d6992334e575adfc108c0588baf8ce89e2"
