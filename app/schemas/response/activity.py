@@ -1,12 +1,8 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
-
-class ActivityBase(BaseModel):
-    """Pydantic модель для возврата данных о деятельности организации"""
-
-    name: str = Field(..., min_length=2, max_length=200)
+from app.schemas.common import ActivityBase
 
 
 class ActivityResponse(ActivityBase):
@@ -15,11 +11,9 @@ class ActivityResponse(ActivityBase):
     id: int
     level: int
     parent_id: Optional[int] = None
-
     model_config = {
         "from_attributes": True,
         "extra": "forbid",
-        "strict": True,
     }
 
 
@@ -27,10 +21,9 @@ class ActivityTreeResponse(ActivityResponse):
     """Для древовидного вывода деятельности организаций"""
 
     children: List["ActivityTreeResponse"] = Field(default_factory=list)
-
     model_config = {
         "from_attributes": True,
     }
 
 
-ActivityTreeResponse.model_rebuild()  # Для избежания forward reference ?
+ActivityTreeResponse.model_rebuild()  # нужен для self-reference

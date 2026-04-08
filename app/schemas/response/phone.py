@@ -10,5 +10,4 @@ class PhoneResponse(BaseModel):
     model_config = {
         "from_attributes": True,
         "extra": "forbid",
-        "strict": True,
     }
