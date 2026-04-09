@@ -22,7 +22,7 @@ class ActivityRepository:
         )
         return db.scalars(query).first()
 
-    def get_by_id(self, db: Session, activity_id: int) -> Activity | None:
+    def get_activity_by_id(self, db: Session, activity_id: int) -> Activity | None:
         """
         SQL-запрос: выбирает вид деятельности по id
         Args:

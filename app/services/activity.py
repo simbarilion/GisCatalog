@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.db.models import Activity
@@ -19,11 +18,11 @@ class ActivityService:
         """
         parent = None
         if parent_id:
-            parent = self.repo.get_by_id(db, parent_id)
+            parent = self.repo.get_activity_by_id(db, parent_id)
             if not parent:
-                raise HTTPException(status_code=404, detail="No data")
+                raise ValueError("Not found")
             if parent.level >= self.MAX_LEVEL:
-                raise HTTPException(status_code=400, detail="Max depth is 3")
+                raise ValueError("Max depth is 3")
         activity = Activity(name=name, parent=parent, level=0 if not parent else parent.level + 1)
         db.add(activity)
         db.commit()
