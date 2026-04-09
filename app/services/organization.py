@@ -3,7 +3,7 @@ from typing import List
 from geoalchemy2.functions import ST_MakeEnvelope, ST_MakePoint, ST_SetSRID
 from sqlalchemy.orm import Session
 
-from app.db.models import Activity, Organization
+from app.db.models import Organization
 from app.db.repositories.activity import ActivityRepository
 from app.db.repositories.organization import OrganizationRepository
 from app.schemas.response import OrganizationListResponse
@@ -18,11 +18,7 @@ class OrganizationService:
     @staticmethod
     def _base_response(orgs, total: int, limit: int, offset: int) -> OrganizationListResponse:
         """Возвращает список организаций"""
-        if limit == 0:
-            page = 1
-        else:
-            page = (offset // limit) + 1
-
+        page = (offset // limit) + 1 if limit > 0 else 1
         return OrganizationListResponse(
             items=orgs,
             total=total,
@@ -43,20 +39,8 @@ class OrganizationService:
         return self._base_response(orgs, total, limit, offset)
 
     def get_activity_with_children(self, db: Session, activity_id: int) -> List[int]:
-        """Получает список id организаций с вложенностью по виду деятельности"""
-        root = self.activity_repo.get_with_children(db, activity_id)
-        if not root:
-            return []
-
-        result = []
-
-        def collect(act: Activity) -> None:
-            result.append(act.id)
-            for child in act.children:
-                collect(child)
-
-        collect(root)
-        return result
+        """Получает список id вида деятельности и всех его потомков"""
+        return self.activity_repo.get_activity_ids_with_children(db, activity_id)
 
     def get_by_activity(
         self, db: Session, activity_id: int, include_children: bool, limit: int, offset: int
