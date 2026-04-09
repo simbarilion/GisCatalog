@@ -18,10 +18,15 @@ class OrganizationService:
     @staticmethod
     def _base_response(orgs, total: int, limit: int, offset: int) -> OrganizationListResponse:
         """Возвращает список организаций"""
+        if limit == 0:
+            page = 1
+        else:
+            page = (offset // limit) + 1
+
         return OrganizationListResponse(
             items=orgs,
             total=total,
-            page=offset // limit + 1,
+            page=page,
             size=limit,
         )
 
