@@ -3,10 +3,10 @@ from typing import List
 from pydantic import BaseModel, Field
 
 from app.schemas.common import OrganizationBase
+from app.schemas.common.phone import PhoneResponse
 
 from .activity import ActivityResponse
 from .building import BuildingResponse
-from .phone import PhoneResponse
 
 
 class OrganizationResponse(OrganizationBase):
@@ -27,8 +27,9 @@ class OrganizationShortResponse(BaseModel):
 
     id: int
     name: str
+    latitude: float
+    longitude: float
     model_config = {
-        "from_attributes": True,
         "extra": "forbid",
     }
 

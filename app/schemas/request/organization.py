@@ -17,7 +17,6 @@ class OrganizationsByActivity(BaseModel):
     """Организации по виду деятельности: с учётом вложенности"""
 
     activity_id: int
-    include_children: bool = Field(True, description="Включать дочерние виды деятельности")
 
 
 class OrganizationsInRadius(BaseModel):

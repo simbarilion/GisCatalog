@@ -1,7 +1,10 @@
 from sqlalchemy.orm import Session
 
+from app.core.logging import setup_logger
 from app.db.models import Activity
 from app.db.repositories.activity import ActivityRepository
+
+logger = setup_logger(__name__, log_to_console=True)
 
 
 class ActivityService:
@@ -26,5 +29,6 @@ class ActivityService:
         activity = Activity(name=name, parent=parent, level=0 if not parent else parent.level + 1)
         db.add(activity)
         db.commit()
+        logger.info("Добавлен новый вид деятельности: %s", activity.name)
         db.refresh(activity)
         return activity

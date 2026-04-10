@@ -6,7 +6,6 @@ from app.api.dependencies.common import (
     Activity_id,
     Building_id,
     DBSession,
-    Include_children,
     Lat,
     Limit,
     Lon,
@@ -65,22 +64,19 @@ def get_by_building(db: DBSession, building_id: Building_id, limit: Limit = 50, 
     "/by_activity",
     response_model=OrganizationListResponse,
     summary="Поиск организаций по виду деятельности",
-    description="Возвращает список всех организаций по указанному виду деятельности. При include_children=True "
-    "(по умолчанию) учитываются все вложенные подкатегории. Уровень вложенности видов деятельности "
-    "ограничен 3 уровнями. Поиск осуществляется по идентификатору вида деятельности (id). Поддерживает "
-    "пагинацию. По умолчанию выводит 50 организаций на странице",
+    description="Возвращает список всех организаций по указанному виду деятельности. Учитываются все вложенные "
+    "подкатегории. Уровень вложенности видов деятельности ограничен 3 уровнями. Поиск осуществляется "
+    "по идентификатору вида деятельности (id). Поддерживает пагинацию. По умолчанию выводит 50 организаций "
+    "на странице",
 )
 def get_by_activity(
     db: DBSession,
     activity_id: Activity_id,
-    include_children: Include_children = True,
     limit: Limit = 50,
     offset: Offset = 0,
 ):
-    """Список организаций с вложенностью (опционально) по виду деятельности"""
-    return service.get_by_activity(
-        db=db, activity_id=activity_id, include_children=include_children, limit=limit, offset=offset
-    )
+    """Список организаций с вложенностью по виду деятельности"""
+    return service.get_by_activity(db=db, activity_id=activity_id, limit=limit, offset=offset)
 
 
 @organizations_router.get(

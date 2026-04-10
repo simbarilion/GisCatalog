@@ -8,7 +8,7 @@ class ActivityRepository:
 
     def get_activity_ids_with_children(self, db: Session, activity_id: int) -> list[int]:
         """
-        Рекурсивный SQL-запрос:
+        Рекурсивный CTE-запрос:
         возвращает список id всех вложенных видов деятельности (родитель + все потомки)
         Args:
             db: SQLAlchemy Session
@@ -42,7 +42,7 @@ class ActivityRepository:
             db: SQLAlchemy Session
             activity_id: id вида деятельности
         Returns:
-            Activity ORM объект
+            Activity ORM объект or None
         """
         query = select(Activity).where(Activity.id == activity_id)
         return db.scalars(query).first()
