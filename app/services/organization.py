@@ -42,14 +42,9 @@ class OrganizationService:
         """Получает список id вида деятельности и всех его потомков"""
         return self.activity_repo.get_activity_ids_with_children(db, activity_id)
 
-    def get_by_activity(
-        self, db: Session, activity_id: int, include_children: bool, limit: int, offset: int
-    ) -> OrganizationListResponse:
+    def get_by_activity(self, db: Session, activity_id: int, limit: int, offset: int) -> OrganizationListResponse:
         """Получает список организаций с вложенностью по виду деятельности"""
-        if include_children:
-            activity_ids = self.get_activity_with_children(db, activity_id)
-        else:
-            activity_ids = [activity_id]
+        activity_ids = self.get_activity_with_children(db, activity_id)
         if not activity_ids:
             return self._base_response([], 0, limit, offset)
         orgs, total = self.repo.get_by_activity(db, activity_ids, limit, offset)

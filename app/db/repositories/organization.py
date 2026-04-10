@@ -1,9 +1,9 @@
 from geoalchemy2 import Geography
 from geoalchemy2.functions import ST_X, ST_Y, ST_DWithin, ST_SetSRID, ST_Within
-from sqlalchemy import func, select
+from sqlalchemy import exists, func, select
 from sqlalchemy.orm import Session, joinedload
 
-from app.db.models import Activity, Building, Organization
+from app.db.models import Building, Organization, organization_activity
 
 
 class OrganizationRepository:
@@ -96,17 +96,29 @@ class OrganizationRepository:
         Returns:
             Кортеж: Коллекция Organization ORM объектов с пагинацией, общее количество Organization ORM объектов
         """
-        data_query = (
-            self._base_query()
-            .join(Organization.activities)
-            .where(Activity.id.in_(activity_ids))
-            .group_by(Organization.id, Building.location)
-            .order_by(Organization.name)
+        data_query = self._base_query().where(
+            exists(
+                select(1)
+                .select_from(organization_activity)
+                .where(
+                    organization_activity.c.organization_id == Organization.id,
+                    organization_activity.c.activity_id.in_(activity_ids),
+                )
+            )
         )
         count_query = (
-            select(func.count(func.distinct(Organization.id)))
-            .join(Organization.activities)
-            .where(Activity.id.in_(activity_ids))
+            select(func.count())
+            .select_from(Organization)
+            .where(
+                exists(
+                    select(1)
+                    .select_from(organization_activity)
+                    .where(
+                        organization_activity.c.organization_id == Organization.id,
+                        organization_activity.c.activity_id.in_(activity_ids),
+                    )
+                )
+            )
         )
         return self._paginate(db, data_query, count_query, limit, offset)
 
