@@ -1,10 +1,14 @@
+import os
+
 import uvicorn
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from starlette.responses import JSONResponse
 
 from app.api.routes.health import health_router
 from app.api.routes.organizations import organizations_router
 
+load_dotenv()
 app = FastAPI(
     title="Gis Catalog API",
     description="Справочник организаций, зданий и видов деятельности. "
@@ -39,4 +43,9 @@ async def general_exception_handler(request: Request, exc: Exception):
 
 
 if __name__ == "__main__":
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(
+        "app.main:app",
+        host=os.getenv("HOST", "0.0.0.0"),
+        port=int(os.getenv("PORT", 8000)),
+        reload=os.getenv("ENV", "development").lower() == "development",
+    )

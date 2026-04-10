@@ -50,7 +50,7 @@ class OrganizationRepository:
             db: SQLAlchemy Session
             org_id: id организации
         Returns:
-            Organization ORM объект
+            Organization ORM объект или None
         """
         query = self._base_query().where(Organization.id == org_id)
         return db.scalars(query).first()

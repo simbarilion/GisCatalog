@@ -1,7 +1,8 @@
+from app.schemas.common.phone import PhoneResponse
+
 from .activity import ActivityResponse, ActivityTreeResponse
 from .building import BuildingListResponse, BuildingResponse
 from .organization import OrganizationListResponse, OrganizationResponse
-from .phone import PhoneResponse
 
 __all__ = [
     "OrganizationResponse",

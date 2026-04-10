@@ -26,7 +26,7 @@ def health():
     response_model=None,
 )
 def db_health(db: Session = Depends(get_db)):
-    """Проверка соединения с базой"""
+    """Проверка соединения с базой данных"""
     try:
         db.execute(text("SELECT 1")).scalar_one()
         return {"status": "ok", "database": "connected", "message": "Successfully connected to PostgreSQL + PostGIS"}

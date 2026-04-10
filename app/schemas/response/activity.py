@@ -26,4 +26,4 @@ class ActivityTreeResponse(ActivityResponse):
     }
 
 
-ActivityTreeResponse.model_rebuild()  # нужен для self-reference
+ActivityTreeResponse.model_rebuild()  # для self-reference

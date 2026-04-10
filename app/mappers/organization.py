@@ -4,6 +4,10 @@ from app.db.models import Organization
 
 
 def map_organization(org: Organization):
+    """
+    Преобразует geometry данные в координаты (lon, lat).
+    Преобразует объект Organization в словарь значений
+    """
     building = org.building
     lon, lat = to_shape(building.location).coords[0]
 
