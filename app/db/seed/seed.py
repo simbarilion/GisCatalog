@@ -1,12 +1,13 @@
 import argparse
 
 from geoalchemy2 import WKTElement
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.db.models import Activity, Building, Organization, Phone
 from app.db.session import SessionLocal
 
-from .data import activities, buildings, organizations, phones
+from .data import ORG_ACTIVITY_MAP, activities, buildings, organizations, phones
 
 
 def seed_database(db: Session, clear: bool = False, only_if_empty: bool = False) -> None:
@@ -24,10 +25,15 @@ def seed_database(db: Session, clear: bool = False, only_if_empty: bool = False)
 
     if clear:
         print("Очистка базы перед заполнением...")
-        db.query(Phone).delete()
-        db.query(Organization).delete()
-        db.query(Activity).delete()
-        db.query(Building).delete()
+        db.execute(text("""
+        TRUNCATE TABLE
+            organization_activity,
+            phones,
+            organizations,
+            activities,
+            buildings
+        RESTART IDENTITY CASCADE;
+        """))
         db.commit()
         print("База очищена")
 
@@ -65,8 +71,17 @@ def seed_database(db: Session, clear: bool = False, only_if_empty: bool = False)
             phone = Phone(phone=phone_str, organization=org)
             db.add(phone)
 
-        for k in range(1 + (i % 2)):
-            act_name = list(activity_dict.keys())[(i + k) % len(activity_dict)]
+        org_acts = []
+
+        for keyword, acts in ORG_ACTIVITY_MAP.items():
+            if keyword.lower() in org_name.lower():
+                org_acts = acts
+                break
+
+        if not org_acts:
+            org_acts = ["Еда"] if i % 2 == 0 else ["Автомобили"]
+
+        for act_name in org_acts:
             org.activities.append(activity_dict[act_name])
 
     db.commit()

@@ -27,8 +27,9 @@ class OrganizationShortResponse(BaseModel):
 
     id: int
     name: str
+    latitude: float
+    longitude: float
     model_config = {
-        "from_attributes": True,
         "extra": "forbid",
     }
 

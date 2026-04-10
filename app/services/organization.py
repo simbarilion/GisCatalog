@@ -3,9 +3,9 @@ from typing import List
 from geoalchemy2.functions import ST_MakeEnvelope, ST_MakePoint, ST_SetSRID
 from sqlalchemy.orm import Session
 
-from app.db.models import Organization
 from app.db.repositories.activity import ActivityRepository
 from app.db.repositories.organization import OrganizationRepository
+from app.mappers.organization import map_organization
 from app.schemas.response import OrganizationListResponse
 
 
@@ -26,12 +26,12 @@ class OrganizationService:
             size=limit,
         )
 
-    def get_organization_by_id(self, db: Session, org_id: int) -> Organization:
+    def get_organization_by_id(self, db: Session, org_id: int) -> dict:
         """Получает организацию по id"""
         org = self.repo.get_organization_by_id(db, org_id)
         if not org:
             raise ValueError("Not found")
-        return org
+        return map_organization(org)
 
     def get_by_building(self, db: Session, building_id: int, limit: int, offset: int) -> OrganizationListResponse:
         """Получает список организаций в указанном здании (по id здания)"""
