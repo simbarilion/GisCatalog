@@ -7,8 +7,11 @@ from starlette.responses import JSONResponse
 
 from app.api.routes.health import health_router
 from app.api.routes.organizations import organizations_router
+from app.core.sentry import init_sentry
 
 load_dotenv()
+
+init_sentry()
 app = FastAPI(
     title="Gis Catalog API",
     description="Справочник организаций, зданий и видов деятельности. "

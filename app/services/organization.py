@@ -9,7 +9,7 @@ from app.db.repositories.organization import OrganizationRepository
 from app.mappers.organization import map_organization
 from app.schemas.response import OrganizationListResponse
 
-logger = setup_logger(__name__, log_to_console=True)
+logger = setup_logger(__name__, level="WARNING")
 
 
 class OrganizationService:

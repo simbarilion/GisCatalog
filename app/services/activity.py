@@ -4,7 +4,7 @@ from app.core.logging import setup_logger
 from app.db.models import Activity
 from app.db.repositories.activity import ActivityRepository
 
-logger = setup_logger(__name__, log_to_console=True)
+logger = setup_logger(__name__, level="INFO")
 
 
 class ActivityService:
