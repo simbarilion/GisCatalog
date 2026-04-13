@@ -198,6 +198,9 @@ ReDoc: http://localhost:8000/redoc
     cp .env.example .env
 
 5. Создать базу данных PostgreSQL с расширением PostGIS
+    CREATE DATABASE gis_catalog;
+    \c gis_catalog
+    CREATE EXTENSION postgis;
 
 6. Примененить миграции:
     alembic upgrade head
