@@ -57,7 +57,7 @@ class OrganizationRepository:
             limit: количество записей
             offset: смещение
         Returns:
-            Кортеж: Коллекция Organization ORM объектов с пагинацией, общее количество Organization ORM объектов
+            Кортеж: список словарей с данными об организациях с пагинацией, общее количество полученных организаций
         """
         data_query = self._base_query().where(Organization.name.ilike(f"%{name}%")).order_by(Organization.name)
         count_query = select(func.count()).select_from(Organization).where(Organization.name.ilike(f"%{name}%"))
@@ -72,7 +72,7 @@ class OrganizationRepository:
             limit: количество записей
             offset: смещение
         Returns:
-            Кортеж: Коллекция Organization ORM объектов с пагинацией, общее количество Organization ORM объектов
+            Кортеж: список словарей с данными об организациях с пагинацией, общее количество полученных организаций
         """
         data_query = self._base_query().where(Organization.building_id == building_id).order_by(Organization.name)
         count_query = select(func.count()).select_from(Organization).where(Organization.building_id == building_id)
@@ -87,7 +87,7 @@ class OrganizationRepository:
             limit: количество записей
             offset: смещение
         Returns:
-            Кортеж: Коллекция Organization ORM объектов с пагинацией, общее количество Organization ORM объектов
+            Кортеж: список словарей с данными об организациях с пагинацией, общее количество полученных организаций
         """
         data_query = self._base_query().where(
             exists(
@@ -127,7 +127,7 @@ class OrganizationRepository:
             limit: количество записей
             offset: смещение
         Returns:
-            Кортеж: Коллекция Organization ORM объектов с пагинацией, общее количество Organization ORM объектов
+            Кортеж: список словарей с данными об организациях с пагинацией, общее количество полученных организаций
         """
         data_query = (
             self._base_query()
@@ -152,7 +152,7 @@ class OrganizationRepository:
             limit: количество записей
             offset: смещение
         Returns:
-            Кортеж: Коллекция Organization ORM объектов с пагинацией, общее количество Organization ORM объектов
+            Кортеж: список словарей с данными об организациях с пагинацией, общее количество полученных организаций
         """
         data_query = (
             self._base_query()
