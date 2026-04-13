@@ -1,4 +1,5 @@
 from geoalchemy2.shape import to_shape
+from sqlalchemy import Sequence
 
 from app.db.models import Organization
 
@@ -31,3 +32,16 @@ def map_organization(org: Organization):
             for a in org.activities
         ],
     }
+
+
+def map_orgs_list(orgs: Sequence[Organization]) -> list[dict]:
+    """Преобразует коллекцию объектов Organization в список словарей значений"""
+    return [
+        {
+            "id": org.id,
+            "name": org.name,
+            "latitude": lat,
+            "longitude": lon,
+        }
+        for org, lat, lon in orgs
+    ]

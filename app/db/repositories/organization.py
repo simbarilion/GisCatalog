@@ -4,6 +4,7 @@ from sqlalchemy import exists, func, select
 from sqlalchemy.orm import Session, joinedload
 
 from app.db.models import Building, Organization, organization_activity
+from app.mappers.organization import map_orgs_list
 
 
 class OrganizationRepository:
@@ -31,15 +32,7 @@ class OrganizationRepository:
          - общее количество полученных данных (total)
         """
         rows = db.execute(data_query.limit(limit).offset(offset)).unique().all()
-        items = [
-            {
-                "id": org.id,
-                "name": org.name,
-                "latitude": lat,
-                "longitude": lon,
-            }
-            for org, lat, lon in rows
-        ]
+        items = map_orgs_list(rows)
         total = db.scalar(count_query) or 0
         return items, total
 
